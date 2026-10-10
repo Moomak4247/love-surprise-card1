@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#fff0f5">
+<title>จดหมายถึงเธอ 💌</title>
+<style>
+  :root { --pink:#f7a9c4; --deep:#bd4778; --cream:#fffaf6; --ink:#6b3b50; }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; min-height:100vh; overflow-x:hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color:var(--ink);
+    background: radial-gradient(circle at top, #fffafd 0, #ffe8f0 55%, #fbd2e1 100%);
+  }
+  .wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px 16px; }
+  .scene { width:min(100%,440px); text-align:center; position:relative; z-index:1; }
+  .tiny { letter-spacing:.14em; text-transform:uppercase; font-size:.75rem; color:#b65d82; }
+  h1 { font-size:clamp(1.7rem,7vw,2.35rem); margin:12px 0 8px; line-height:1.25; }
+  .sub { margin:0 auto 28px; max-width:300px; line-height:1.7; color:#98637a; }
+  .envelope-button { border:0; background:transparent; padding:0; width:min(82vw,330px); cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .envelope { height:205px; position:relative; filter:drop-shadow(0 16px 18px #d783a044); }
+  .env-back { position:absolute; inset:0; background:#f6a6c2; border-radius:12px; }
+  .letter-peek { position:absolute; left:9%; right:9%; bottom:18px; height:155px; background:#fffdf9; border-radius:8px; transition:transform .7s ease; }
+  .letter-peek:before { content:"♡"; display:block; margin-top:22px; font-size:42px; color:#e989ad; }
+  .flap { position:absolute; top:0; left:0; width:100%; height:100%; background:#f9bfd2; clip-path:polygon(0 0,100% 0,50% 58%); transform-origin:top; transition:transform .7s ease; z-index:4; }
+  .pocket { position:absolute; inset:0; background:#f3a0bd; clip-path:polygon(0 100%,0 0,50% 58%,100% 0,100% 100%); border-radius:0 0 12px 12px; z-index:3; }
+  .seal { position:absolute; left:50%; top:49%; transform:translate(-50%,-50%); z-index:5; width:50px; height:50px; border-radius:50%; display:grid; place-items:center; background:#c94778; color:white; font-size:26px; box-shadow:0 4px 10px #a53d6b44; transition:opacity .3s; }
+  .envelope-button:hover .seal { transform:translate(-50%,-50%) scale(1.06); }
+  .opened .flap { transform:rotateX(180deg); z-index:1; }
+  .opened .seal { opacity:0; }
+  .opened .letter-peek { transform:translateY(-62px); }
+  .hint { margin:18px 0 0; font-size:.9rem; color:#a05d7a; }
+  .letter { display:none; margin:30px auto 0; padding:26px 23px; background:rgba(255,253,249,.94); border:1px solid #f8d7e3; border-radius:18px; box-shadow:0 12px 35px #c56d8b22; text-align:left; animation:rise .8s ease both; }
+  .letter.show { display:block; }
+  .letter h2 { text-align:center; color:#bd4778; margin:0 0 18px; font-size:1.5rem; }
+  .letter p { line-height:1.9; white-space:pre-line; margin:0 0 14px; }
+  .sign { text-align:right; color:#bd4778; font-weight:600; }
+  .end { display:none; margin:18px auto 0; border:1px solid #efb4cb; color:#b94375; background:#fff6fa; padding:12px 18px; border-radius:999px; font-size:1rem; }
+  .end.show { display:inline-block; }
+  .footer { margin-top:28px; font-size:.75rem; color:#b67c94; }
+  .heart { position:fixed; bottom:-35px; z-index:0; pointer-events:none; animation:floatUp linear forwards; opacity:.8; }
+  @keyframes floatUp { to { transform:translateY(-115vh) rotate(25deg); opacity:0; } }
+  @keyframes rise { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { *,*:before,*:after { animation-duration:.01ms !important; transition-duration:.01ms !important; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="scene">
+    <div class="tiny">A little surprise for you</div>
+    <h1 id="headline">มีจดหมายถึงเธอ 💌</h1>
+    <p class="sub" id="intro">มีบางอย่างที่เราอยากบอกเธอ กดเปิดซองดูนะ</p>
+
+    <button class="envelope-button" id="openBtn" aria-label="เปิดซองจดหมาย">
+      <div class="envelope" id="envelope">
+        <div class="env-back"></div>
+        <div class="letter-peek"></div>
+        <div class="flap"></div>
+        <div class="pocket"></div>
+        <div class="seal">♥</div>
+      </div>
+    </button>
+    <p class="hint" id="hint">แตะที่ซองเพื่อเปิดจดหมาย</p>
+
+    <article class="letter" id="letter">
+      <h2 id="letterTitle">ถึงคนพิเศษของเรา 💗</h2>
+      <p id="message">ขอบคุณที่เข้ามาเป็นรอยยิ้มในทุก ๆ วันนะ
+ไม่ว่าจะเจออะไร เราก็อยากมีเธออยู่ข้าง ๆ
+ขอให้เธอรู้ไว้ว่ามีคนคนหนึ่งคิดถึงเธอเสมอเลย</p>
+      <p class="sign" id="signature">รักนะ — จากคนที่คิดถึงเธอ</p>
+    </article>
+    <button class="end" id="endBtn">กดรับความรักอีกหนึ่งครั้ง 💖</button>
+    <div class="footer">made with love ♡</div>
+  </section>
+</main>
+<script>
+  // ปรับข้อความส่วนตัวได้ที่ค่าด้านล่างนี้
+  const settings = {
+    headline: "มีจดหมายถึงเธอ 💌",
+    intro: "มีบางอย่างที่เราอยากบอกเธอ กดเปิดซองดูนะ",
+    letterTitle: "ถึงคนพิเศษของเรา 💗",
+    message: "ขอบคุณที่เข้ามาเป็นรอยยิ้มในทุก ๆ วันนะ\nไม่ว่าจะเจออะไร เราก็อยากมีเธออยู่ข้าง ๆ\nขอให้เธอรู้ไว้ว่ามีคนคนหนึ่งคิดถึงเธอเสมอเลย",
+    signature: "รักนะ — จากคนที่คิดถึงเธอ",
+    ending: "เธอคือความพิเศษของเราเสมอ ❤️"
+  };
+  document.getElementById("headline").textContent = settings.headline;
+  document.getElementById("intro").textContent = settings.intro;
+  document.getElementById("letterTitle").textContent = settings.letterTitle;
+  document.getElementById("message").textContent = settings.message;
+  document.getElementById("signature").textContent = settings.signature;
+
+  const btn = document.getElementById("openBtn");
+  const envelope = document.getElementById("envelope");
+  const letter = document.getElementById("letter");
+  const hint = document.getElementById("hint");
+  const endBtn = document.getElementById("endBtn");
+  let opened = false;
+
+  function makeHeart() {
+    const heart = document.createElement("span");
+    heart.className = "heart";
+    heart.textContent = ["♥","♡","💕","💗"][Math.floor(Math.random()*4)];
+    heart.style.left = (Math.random()*100) + "vw";
+    heart.style.fontSize = (16 + Math.random()*22) + "px";
+    heart.style.animationDuration = (4 + Math.random()*4) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 8500);
+  }
+
+  btn.addEventListener("click", () => {
+    if (opened) return;
+    opened = true;
+    envelope.classList.add("opened");
+    hint.textContent = "จดหมายของเธอเปิดแล้ว ♡";
+    setTimeout(() => {
+      letter.classList.add("show");
+      endBtn.classList.add("show");
+      for (let i=0; i<18; i++) setTimeout(makeHeart, i*120);
+    }, 450);
+  });
+
+  endBtn.addEventListener("click", () => {
+    alert(settings.ending);
+    for (let i=0; i<12; i++) setTimeout(makeHeart, i*100);
+  });
+
+  // หัวใจเล็ก ๆ ลอยเป็นระยะ
+  setInterval(makeHeart, 1300);
+</script>
+</body>
+</html>
